@@ -1,0 +1,40 @@
+# Standard VS.NET and ReSharper Foo
+
+.vs
+obj
+[Bb]in
+[Rr]elease
+[Dd]ebug
+[Oo]utput
+_[Rr]eSharper*
+*.[Rr]eSharper.user
+*.suo
+*.cache
+* Thumbs.db
+*.vs10x
+*.zip
+# *.xap
+ClientBin
+*.docstates
+*.DotSettings.user
+
+# Other useful stuff
+.idea
+*.bak
+*.log
+*.swp
+_compareTemp
+_notes
+aspnet_client
+httpd.parse.errors
+*.orig
+*.docstates
+
+*.vssscc
+*.vspscc
+
+[Pp]ackages
+LogFiles
+
+UpgradeLog*
+_UpgradeReport*
