@@ -7,11 +7,12 @@ namespace AxcessAssistant.DAL
 {
     public class DocumentDAL
     {
-        private List<Document> _documents;
+        private static List<Document> _documents;
 
         public DocumentDAL()
         {
-            init();
+            if(_documents == null)
+                init();
         }
 
         public Document GetDocument(int id)

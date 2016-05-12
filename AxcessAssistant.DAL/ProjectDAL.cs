@@ -10,7 +10,8 @@ namespace AxcessAssistant.DAL
 
         public ProjectDAL()
         {
-            init();
+            if(_projects == null)
+                init();
         }
 
         public Project GetProject(int id)
@@ -31,16 +32,13 @@ namespace AxcessAssistant.DAL
 
         private void init()
         {
-            if (_projects.Count == 0)
+            _projects.Add(new Project
             {
-                _projects.Add(new Project
-                {
-                    ID = 1,
-                    ClientID = 1,
-                    Name = "Tax",
-                    Status = "In Preparation"
-                });
-            }
+                ID = 1,
+                ClientID = 1,
+                Name = "Tax",
+                Status = "In Preparation"
+            });
         }
     }
 }

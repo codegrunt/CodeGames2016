@@ -7,11 +7,12 @@ namespace AxcessAssistant.DAL
 {
     public class ClientDAL
     {
-        private List<Client> _clients;
+        private static List<Client> _clients;
 
         public ClientDAL()
         {
-            init();
+            if(_clients == null)
+                init();
         }
 
         public Client GetClientById(int id)
