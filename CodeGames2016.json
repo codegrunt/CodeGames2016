@@ -1,0 +1,228 @@
+{
+  "luis_schema_version": "1.2.0",
+  "name": "CodeGames2016",
+  "desc": "",
+  "culture": "en-us",
+  "intents": [
+    {
+      "Name": "Find Intent",
+      "Children": []
+    },
+    {
+      "Name": "Create Intent",
+      "Children": []
+    },
+    {
+      "Name": "None",
+      "Children": []
+    }
+  ],
+  "entities": [
+    {
+      "Name": "EntityType",
+      "Children": [
+        "Name",
+        "Identifier"
+      ]
+    }
+  ],
+  "bing_entities": [
+    "number",
+    "datetime",
+    "age"
+  ],
+  "actions": [
+    {
+      "actionName": "Find Intent",
+      "intentName": "Find Intent",
+      "actionParameters": [
+        {
+          "parameterName": "Entity",
+          "entityName": "EntityType",
+          "required": true
+        }
+      ]
+    },
+    {
+      "actionName": "Create Intent",
+      "intentName": "Create Intent",
+      "actionParameters": [
+        {
+          "parameterName": "Entity",
+          "entityName": "EntityType",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "model_features": [
+    {
+      "name": "EntityWords",
+      "mode": true,
+      "words": "invoice,client,document,project,note,progress invoice,phone number,balance,address,home,office",
+      "activated": true
+    }
+  ],
+  "regex_features": [
+    {
+      "name": "ClientId",
+      "pattern": "\\S*\\.\\S*",
+      "activated": true
+    }
+  ],
+  "utterances": [
+    {
+      "text": "i want to make a note for client 1234.24",
+      "intent": "Create Intent",
+      "entities": [
+        {
+          "entity": "EntityType::Identifier",
+          "startPos": 8,
+          "endPos": 10
+        },
+        {
+          "entity": "EntityType",
+          "startPos": 5,
+          "endPos": 5
+        },
+        {
+          "entity": "EntityType",
+          "startPos": 7,
+          "endPos": 7
+        }
+      ]
+    },
+    {
+      "text": "create a invoice for client 1234123.232",
+      "intent": "Create Intent",
+      "entities": [
+        {
+          "entity": "EntityType::Identifier",
+          "startPos": 5,
+          "endPos": 7
+        },
+        {
+          "entity": "EntityType",
+          "startPos": 2,
+          "endPos": 2
+        },
+        {
+          "entity": "EntityType",
+          "startPos": 4,
+          "endPos": 4
+        }
+      ]
+    },
+    {
+      "text": "please create note for john smith",
+      "intent": "Create Intent",
+      "entities": [
+        {
+          "entity": "EntityType::Name",
+          "startPos": 4,
+          "endPos": 5
+        },
+        {
+          "entity": "EntityType",
+          "startPos": 2,
+          "endPos": 2
+        }
+      ]
+    },
+    {
+      "text": "create progress invoice for client john smith",
+      "intent": "Create Intent",
+      "entities": [
+        {
+          "entity": "EntityType::Name",
+          "startPos": 5,
+          "endPos": 6
+        },
+        {
+          "entity": "EntityType",
+          "startPos": 1,
+          "endPos": 2
+        },
+        {
+          "entity": "EntityType",
+          "startPos": 4,
+          "endPos": 4
+        }
+      ]
+    },
+    {
+      "text": "make a note for client john smith",
+      "intent": "Create Intent",
+      "entities": [
+        {
+          "entity": "EntityType::Name",
+          "startPos": 5,
+          "endPos": 6
+        },
+        {
+          "entity": "EntityType",
+          "startPos": 2,
+          "endPos": 2
+        },
+        {
+          "entity": "EntityType",
+          "startPos": 4,
+          "endPos": 4
+        }
+      ]
+    },
+    {
+      "text": "what is the phone number for 123432.43ew",
+      "intent": "Find Intent",
+      "entities": [
+        {
+          "entity": "EntityType::Name",
+          "startPos": 6,
+          "endPos": 8
+        },
+        {
+          "entity": "EntityType",
+          "startPos": 3,
+          "endPos": 4
+        }
+      ]
+    },
+    {
+      "text": "what is the balance for customer 1234123.14223",
+      "intent": "Find Intent",
+      "entities": [
+        {
+          "entity": "EntityType::Identifier",
+          "startPos": 6,
+          "endPos": 8
+        },
+        {
+          "entity": "EntityType",
+          "startPos": 3,
+          "endPos": 3
+        },
+        {
+          "entity": "EntityType",
+          "startPos": 5,
+          "endPos": 5
+        }
+      ]
+    },
+    {
+      "text": "where is john smith's home",
+      "intent": "Find Intent",
+      "entities": [
+        {
+          "entity": "EntityType::Name",
+          "startPos": 2,
+          "endPos": 3
+        },
+        {
+          "entity": "EntityType",
+          "startPos": 6,
+          "endPos": 6
+        }
+      ]
+    }
+  ]
+}
