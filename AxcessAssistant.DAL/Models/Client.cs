@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace AxcessAssistant.DAL.Models
 {
+    [Serializable]
     public class Client
     {
         public int ID { get; set; }
@@ -15,6 +16,7 @@ namespace AxcessAssistant.DAL.Models
         public decimal ARBalance { get; set; }
     }
 
+    [Serializable]
     public class Note
     {
         public DateTime DateTime { get; set; }

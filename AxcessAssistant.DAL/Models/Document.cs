@@ -2,6 +2,7 @@
 
 namespace AxcessAssistant.DAL.Models
 {
+    [Serializable]
     public class Document
     {
         public int ID { get; set; } 

@@ -5,6 +5,7 @@ using System.Web;
 using Microsoft.Bot.Builder.FormFlow;
 
 using AxcessAssistant.DAL;
+using AxcessAssistant.DAL.Models;
 
 
 namespace AxcessAssistant.Forms
@@ -12,9 +13,14 @@ namespace AxcessAssistant.Forms
     [Serializable]
     public class Invoice
     {
+        private Document _invoice;
+
         private int _clientId;
-        public int ClientId { get
-            { return _clientId; }
+        public int ClientId {
+            get
+            {
+                return _clientId;
+            }
             set
             {
 
@@ -23,9 +29,10 @@ namespace AxcessAssistant.Forms
                 if (clt != null)
                 {
                     var docs = new DocumentDAL();
-                    var doc = docs.FindDocumentsForClientUpToDate(clt.ID, DateTime.Now, DAL.Models.DocumentType.Invoice);
+                    var doc = docs.FindDocumentsForClientUpToDate(clt.ID, DateTime.Now, DocumentType.Invoice);
                     if (doc != null || doc.Count > 0)
                     {
+                        _invoice = doc[0];
                         _clientId = value;
                         Console.WriteLine("found it");
                     }

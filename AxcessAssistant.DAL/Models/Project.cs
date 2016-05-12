@@ -1,5 +1,9 @@
-﻿namespace AxcessAssistant.DAL.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace AxcessAssistant.DAL.Models
 {
+    [Serializable]
     public class Project
     {
         public int ID { get; set; }
