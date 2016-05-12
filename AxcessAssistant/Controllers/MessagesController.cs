@@ -34,9 +34,12 @@ namespace AxcessAssistant
                 return HandleSystemMessage(message);
             }
         }
-        
-        internal static IDialog<Invoice> MakeRootDialog()
-            return Chain.From(() => FormDialog.FromForm(Invoice.BuildForm));
+
+        internal static IDialog<Entity> MakeRootDialog()
+        {
+            return Chain.From(() => new BaseDialog());
+        }
+            
 
         private Message HandleSystemMessage(Message message)
         {
