@@ -20,15 +20,10 @@ namespace AxcessAssistant.DAL
             return _clients.FirstOrDefault(x => x.ID == id);
         }
 
-        public List<Client> FindClientsByName(string clientName)
+        public List<Client> FindClientsByName(string name)
         {
-            return _clients.FindAll(x => x.ClientName.Contains(clientName));
+            return _clients.FindAll(x => x.ClientName.Contains(name) || x.ContactName.Contains(name));
         }     
-        
-        public List<Client> FindClientsByContactName(string contactName)
-        {
-            return _clients.FindAll(x => x.ContactName.Contains(contactName));
-        }
 
         public Client GetClientByContactPhoneNumber(string phoneNumber)
         {

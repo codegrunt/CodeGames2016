@@ -107,7 +107,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Dialogs\BaseDialog.cs" />
-    <Compile Include="Forms\Invoice.cs" />
+    <Compile Include="Dialogs\InvoiceDiag.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -130,6 +130,9 @@
       <Project>{c3cbd0b5-f3d7-47d6-b3c0-3bf911ebf732}</Project>
       <Name>AxcessAssistant.DAL</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Forms\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

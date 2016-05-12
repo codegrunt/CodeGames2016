@@ -10,7 +10,7 @@ using Microsoft.Bot.Connector;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.FormFlow;
 using Newtonsoft.Json;
-using AxcessAssistant.Forms;
+using AxcessAssistant.Dialogs;
 using AxcessAssistant.Models;
 
 namespace AxcessAssistant
@@ -26,18 +26,17 @@ namespace AxcessAssistant
         {
             if (message.Type == "Message")
             {
-                return await Conversation.SendAsync(message, MakeRootDialog);
+                return await Conversation.SendAsync(message, () => new InvoiceDiag());
+                //return await Conversation.SendAsync(message, MakeRootDialog);
             }
             else
             {
                 return HandleSystemMessage(message);
             }
         }
-
-        internal static IDialog<Entity> MakeRootDialog()
-        {
-            return Chain.From(() => new BaseDialog());
-        }
+        
+        internal static IDialog<Invoice> MakeRootDialog()
+            return Chain.From(() => FormDialog.FromForm(Invoice.BuildForm));
 
         private Message HandleSystemMessage(Message message)
         {
