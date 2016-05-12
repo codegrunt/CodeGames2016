@@ -15,7 +15,7 @@ namespace AxcessAssistant.Dialogs
     public class InvoiceDiag : IDialog<object>
     {
 
-        private int _clientId;
+        private string _clientName;
         private Document _doc;
 
         public async Task StartAsync(IDialogContext context)
@@ -40,8 +40,7 @@ namespace AxcessAssistant.Dialogs
                 var msg2 = string.Empty;
                 try
                 {
-                    var cltId = Convert.ToInt32(message.Text);
-                    var clt = GetClient(cltId);
+                    var clt = GetClient(message.Text);
                     if (clt != null)
                     {
 
@@ -86,26 +85,20 @@ namespace AxcessAssistant.Dialogs
         }
 
 
-        private Client GetClient(int clientId)
+        private Client GetClient(string clientName)
         {
-            _clientId = clientId;
+            _clientName = clientName;
             var clts = new ClientDAL();
-            var clt = clts.GetClientById(clientId);
-            return clt;
+            var clt = clts.FindClientsByName(clientName);
+            return clt[0];
         }
         private Document GetInvoiceByClient(int clientId)
         {
-            _clientId = clientId;
-            var clts = new ClientDAL();
-            var clt = clts.GetClientById(clientId);
-            if (clt != null)
+            var docs = new DocumentDAL();
+            var doc = docs.FindDocumentsForClientUpToDate(clientId, DateTime.Now, DocumentType.Invoice);
+            if (doc != null || doc.Count > 0)
             {
-                var docs = new DocumentDAL();
-                var doc = docs.FindDocumentsForClientUpToDate(clt.ID, DateTime.Now, DocumentType.Invoice);
-                if (doc != null || doc.Count > 0)
-                {
-                    return doc[0];
-                }
+                return doc[0];
             }
             return null;
         }
