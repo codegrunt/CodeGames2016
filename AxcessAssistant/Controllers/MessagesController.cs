@@ -26,8 +26,8 @@ namespace AxcessAssistant
         {
             if (message.Type == "Message")
             {
-                return await Conversation.SendAsync(message, () => new InvoiceDiag());
-                //return await Conversation.SendAsync(message, MakeRootDialog);
+                //return await Conversation.SendAsync(message, () => new InvoiceDiag());
+                return await Conversation.SendAsync(message, MakeRootDialog);
             }
             else
             {

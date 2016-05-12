@@ -27,7 +27,15 @@ namespace AxcessAssistant.Dialogs
         {
             var message = await argument;
 
-            if (message.Text == "reset")
+            if (string.Equals(message.Text, "quit", StringComparison.InvariantCultureIgnoreCase))
+            {
+                Reset();
+                var msg = "Good Afternoon, How can I assist you?";
+                await context.PostAsync(msg);
+                var baseDiag = new BaseDialog();
+                context.Wait(baseDiag.StartOver);
+            }
+            else if (message.Text == "reset")
             {
                 Reset();
                 var msg = "Session reset";

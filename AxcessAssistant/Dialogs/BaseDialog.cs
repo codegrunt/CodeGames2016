@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
 using AxcessAssistant.Models;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Luis;
 using Microsoft.Bot.Builder.Luis.Models;
+using Microsoft.Bot.Connector;
 
 namespace AxcessAssistant.Dialogs
 {
@@ -26,15 +29,21 @@ namespace AxcessAssistant.Dialogs
             string message =
                 $"Recieved Find Intent with the following Entities: {string.Join(",", result.Entities.Select(e => e.Entity + e.Type))}";
             await context.PostAsync(message);
-            context.Wait(MessageReceived);
+            var invoiceDiag  = new InvoiceDiag();
+            context.Wait(invoiceDiag.MessageReceivedAsync);
         }
 
         [LuisIntent("Create Intent")]
         public async Task Create(IDialogContext context, LuisResult result)
         {
-            string message = $"Recieved Find Intent with the following Entities: {string.Join(",", result.Entities.Select(e => e.Entity + e.Type))}";
+            string message = $"Recieved Create Intent with the following Entities: {string.Join(",", result.Entities.Select(e => e.Entity + e.Type))}";
             await context.PostAsync(message);
             context.Wait(MessageReceived);
+        }
+
+        public Task StartOver(IDialogContext context, IAwaitable<Message> message)
+        {
+            return MessageReceived(context, message);
         }
 
         public BaseDialog(ILuisService service = null)
