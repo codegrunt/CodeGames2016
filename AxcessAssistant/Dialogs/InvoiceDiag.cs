@@ -39,7 +39,10 @@ namespace AxcessAssistant.Dialogs
                     var inv = GetInvoiceByClient(clt.ID);
 
                     if (inv != null)
+                    {
+                        _doc = inv;
                         msg = "Found invoice " + inv.Name;
+                    }
                     else
                         msg = "Can not find invoices for client " + message.Text;
                 }
