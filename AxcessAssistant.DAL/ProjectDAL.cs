@@ -32,6 +32,7 @@ namespace AxcessAssistant.DAL
 
         private void init()
         {
+            _projects = new List<Project>();
             _projects.Add(new Project
             {
                 ID = 1,

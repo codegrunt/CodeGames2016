@@ -42,6 +42,7 @@ namespace AxcessAssistant.DAL
 
         private void init()
         {
+            _clients = new List<Client>();
             _clients.Add(new Client
             {
                 ID = 1,
