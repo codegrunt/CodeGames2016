@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AxcessAssistant.DAL.Models;
 
@@ -49,6 +50,7 @@ namespace AxcessAssistant.DAL
                 Email = "chrispbacon@hotmail.com",
                 ARBalance = 2508.00m,
                 Office = "Irving 175",
+                Notes = new List<Note> { new Note { DateTime = new DateTime(2016, 3, 1), Text = "Called to check on account balance"}, new Note { DateTime = new DateTime(2016, 3, 1), Text = "Called to check on account balance" } }
             });
 
             _clients.Add(new Client
