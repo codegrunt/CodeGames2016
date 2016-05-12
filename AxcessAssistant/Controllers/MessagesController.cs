@@ -5,11 +5,13 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using AxcessAssistant.Dialogs;
 using Microsoft.Bot.Connector;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.FormFlow;
 using Newtonsoft.Json;
 using AxcessAssistant.Dialogs;
+using AxcessAssistant.Models;
 
 namespace AxcessAssistant
 {
@@ -32,7 +34,12 @@ namespace AxcessAssistant
                 return HandleSystemMessage(message);
             }
         }
-        
+
+        internal static IDialog<Entity> MakeRootDialog()
+        {
+            return Chain.From(() => new BaseDialog());
+        }
+            
 
         private Message HandleSystemMessage(Message message)
         {
@@ -49,9 +56,17 @@ namespace AxcessAssistant
             }
             else if (message.Type == "BotAddedToConversation")
             {
+                Message reply = message.CreateReplyMessage();
+                reply.Type = "Message";
+                reply.Text = "I am Axcess Assistant. How can I assist?";
+                return reply;
             }
             else if (message.Type == "BotRemovedFromConversation")
             {
+                Message reply = message.CreateReplyMessage();
+                reply.Type = "Message";
+                reply.Text = "Thanks for using Axcess Assistant.";
+                return reply;
             }
             else if (message.Type == "UserAddedToConversation")
             {
@@ -61,6 +76,10 @@ namespace AxcessAssistant
             }
             else if (message.Type == "EndOfConversation")
             {
+                Message reply = message.CreateReplyMessage();
+                reply.Type = "Message";
+                reply.Text = "Thanks for using Axcess Assistant.";
+                return reply;
             }
 
             return null;
