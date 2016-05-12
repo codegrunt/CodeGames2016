@@ -27,36 +27,62 @@ namespace AxcessAssistant.Dialogs
         {
             var message = await argument;
 
-
-            var msg = "Can not find client " + message.Text;
-            try
+            if (message.Text == "reset")
             {
-                var cltId = Convert.ToInt32(message.Text);
-                var clt = GetClient(cltId);
-                if (clt != null)
-                {
-
-                    var inv = GetInvoiceByClient(clt.ID);
-
-                    if (inv != null)
-                    {
-                        _doc = inv;
-                        msg = "Found invoice " + inv.Name;
-                    }
-                    else
-                        msg = "Can not find invoices for client " + message.Text;
-                }
-            }
-            catch
-            {
-                msg = "Can not find client " + message.Text;
-            }
-            finally
-            {
+                Reset();
+                var msg = "Session reset";
                 await context.PostAsync(msg);
                 context.Wait(MessageReceivedAsync);
             }
+            else if (_doc == null)
+            {
+                var msg = "Can not find client " + message.Text;
+                var msg2 = string.Empty;
+                try
+                {
+                    var cltId = Convert.ToInt32(message.Text);
+                    var clt = GetClient(cltId);
+                    if (clt != null)
+                    {
 
+                        var inv = GetInvoiceByClient(clt.ID);
+
+                        if (inv != null)
+                        {
+                            _doc = inv;
+                            msg = "Found invoice " + inv.Name;
+                            msg2 = "Who would you like to send this to?";
+                        }
+                        else
+                            msg = "Can not find invoices for client " + message.Text;
+                    }
+                }
+                catch
+                {
+                    msg = "Can not find client " + message.Text;
+                }
+                finally
+                {
+                    await context.PostAsync(msg);
+                    if (msg2 != string.Empty)
+                        await context.PostAsync(msg2);
+                    context.Wait(MessageReceivedAsync);
+                }
+            }
+            else
+            {
+                var msg = "Sent invoice to " + message.Text;
+                await context.PostAsync(msg);
+                Reset();
+                context.Wait(MessageReceivedAsync);
+            }
+
+        }
+
+        private bool Reset()
+        {
+            _doc = null;
+            return true;
         }
 
 
