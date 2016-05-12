@@ -36,11 +36,12 @@ namespace AxcessAssistant.DAL
 
         private void init()
         {
+            _documents = new List<Document>();
             _documents.Add(new Document
             {
                 ID = 2,
                 LastModifiedDate = new DateTime(2016, 5, 12),
-                Name = "Invoice 123",
+                Name = "123",
                 Amount = 975.00m,
                 ClientID = 1,
                 DocType = DocumentType.Invoice,
@@ -51,7 +52,7 @@ namespace AxcessAssistant.DAL
             {
                 ID = 1,
                 LastModifiedDate = new DateTime(2016, 4, 12),
-                Name = "Invoice 122",
+                Name = "122",
                 Amount = 1533.00m,
                 ClientID = 1,
                 DocType = DocumentType.Invoice,
