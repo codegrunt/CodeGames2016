@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Microsoft.Bot.Connector;
-using Microsoft.Bot.Connector.Utilities;
+using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Builder.FormFlow;
 using Newtonsoft.Json;
+using AxcessAssistant.Forms;
 
 namespace AxcessAssistant
 {
@@ -22,16 +24,17 @@ namespace AxcessAssistant
         {
             if (message.Type == "Message")
             {
-                // calculate something for us to return
-                int length = (message.Text ?? string.Empty).Length;
-
-                // return our reply to the user
-                return message.CreateReplyMessage($"You sent {length} characters");
+                return await Conversation.SendAsync(message, MakeRootDialog);
             }
             else
             {
                 return HandleSystemMessage(message);
             }
+        }
+
+        internal static IDialog<Invoice> MakeRootDialog()
+        {
+            return Chain.From(() => FormDialog.FromForm(Invoice.BuildForm));
         }
 
         private Message HandleSystemMessage(Message message)
