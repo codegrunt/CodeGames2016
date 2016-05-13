@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-using System.Web.Configuration;
-using System.Web.UI.WebControls;
-using System.Xml.XPath;
 using AxcessAssistant.DAL;
 using AxcessAssistant.Models;
 using Microsoft.Bot.Builder.Dialogs;
@@ -16,7 +11,7 @@ using Microsoft.Bot.Connector;
 
 namespace AxcessAssistant.Dialogs
 {
-    [LuisModel("2e29faee-2608-4fe6-b126-71880faf19e5", "55d649e8b94c41aab7e358cd34c4a978")]
+    [LuisModel("02853d60-2139-4908-ab6c-5deea7a6fb30", "b33a40080b2d4a2f8bc3ca754e749f7c")]
     [Serializable]
     public class BaseDialog : LuisDialog<Entity>
     {
@@ -35,8 +30,8 @@ namespace AxcessAssistant.Dialogs
             string message =
                 $"Recieved Create Notes Intent with the following Entities: {string.Join(",", result.Entities.Select(e => e.Entity + e.Type))}";
             await context.PostAsync(message);
-            var invoiceDiag = new InvoiceDiag();
-            context.Wait(invoiceDiag.MessageReceivedAsync);
+            var noteDiag = new NoteDiag();
+            context.Wait(noteDiag.MessageReceivedAsync);
         }
 
         [LuisIntent("ReviewNotes")]
@@ -46,8 +41,8 @@ namespace AxcessAssistant.Dialogs
             string message =
                 $"Recieved ReviewNotes Intent with the following Entities: {string.Join(",", result.Entities.Select(e => e.Entity + e.Type))}";
             await context.PostAsync(message);
-            var invoiceDiag  = new InvoiceDiag();
-            context.Wait(invoiceDiag.MessageReceivedAsync);
+            var noteDiag = new NoteDiag();
+            context.Wait(noteDiag.MessageReceivedAsync);
         }
 
         [LuisIntent("GetInvoice")]
@@ -66,8 +61,8 @@ namespace AxcessAssistant.Dialogs
             RetrieiveEntities(context, result);
             string message = $"Recieved Create Intent with the following Entities: {string.Join(",", result.Entities.Select(e => e.Entity + e.Type))}";
             await context.PostAsync(message);
-            var noteDiag = new NoteDiag();
-            context.Wait(noteDiag.MessageReceivedAsync);
+            
+            context.Wait(MessageReceived);
         }
 
         public void RetrieiveEntities(IDialogContext context, LuisResult luis)
