@@ -21,6 +21,8 @@ namespace AxcessAssistant.Dialogs
             context.Wait(MessageReceivedAsync);
         }
 
+        private string _note;
+
         public async Task MessageReceivedAsync(IDialogContext context, IAwaitable<Message> argument)
         {
             var message = await argument;
@@ -28,17 +30,42 @@ namespace AxcessAssistant.Dialogs
             Client clt = null;
             context.ConversationData.TryGetValue("client", out clt);
 
-            var msg = "No note entered.";
-            if (!String.IsNullOrEmpty(message.Text))
+            if (clt == null && String.IsNullOrEmpty(_note))
             {
-                msg = "Note created for " + clt.ClientName + " with the value '" + message.Text + "'";
-                var cltDal = new ClientDAL();
-                cltDal.AddNote(clt.ID, message.Text);
+                _note = message.Text;
+                var msg = "Which client do you want to add the note too?";
+                await context.PostAsync(msg);
+                context.Wait(MessageReceivedAsync);
             }
+            else if( clt == null && !String.IsNullOrEmpty(_note))
+            {
+                var cltDAL = new ClientDAL();
+                var clts = cltDAL.FindClientsByName(message.Text);
+                if (clts != null && clts.Count > 0)
+                {
+                    clt = clts[0];
+                    context.ConversationData.SetValue("client", clt);
+                    cltDAL.AddNote(clt.ID, _note);
+                    var msg = "Note created for " + clt.ClientName + " with the value '" + _note + "'";
+                    await context.PostAsync(msg);
+                    var baseDiag = new BaseDialog();
+                    context.Wait(baseDiag.StartOver);
+                }
+            }
+            else
+            {
+                var msg = "No note entered.";
+                if (!String.IsNullOrEmpty(message.Text))
+                {
+                    msg = "Note created for " + clt.ClientName + " with the value '" + message.Text + "'";
+                    var cltDal = new ClientDAL();
+                    cltDal.AddNote(clt.ID, message.Text);
+                }
 
-            await context.PostAsync(msg);
-            var baseDiag = new BaseDialog();
-            context.Wait(baseDiag.StartOver);
+                await context.PostAsync(msg);
+                var baseDiag = new BaseDialog();
+                context.Wait(baseDiag.StartOver);
+            }
 
         }
     }
