@@ -30,7 +30,7 @@ namespace AxcessAssistant.Dialogs
             await noteDiag.StartAsync(context, StartOver);
         }
 
-        [LuisIntent("Get Note")]
+        [LuisIntent("GetNote")]
         public async Task ReviewNotes(IDialogContext context, LuisResult result)
         {
             RetrieiveEntities(context, result);
