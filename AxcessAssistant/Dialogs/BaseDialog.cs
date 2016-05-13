@@ -58,10 +58,8 @@ namespace AxcessAssistant.Dialogs
         public async Task Update(IDialogContext context, LuisResult result)
         {
             RetrieiveEntities(context, result);
-            string message = $"Recieved Create Intent with the following Entities: {string.Join(",", result.Entities.Select(e => e.Entity + e.Type))}";
-            await context.PostAsync(message);
-
-            context.Wait(MessageReceived);
+            var projDiag = new ProjectDialog();
+            await projDiag.StartAsync(context, StartOver);
         }
 
         public void RetrieiveEntities(IDialogContext context, LuisResult luis)
