@@ -55,7 +55,7 @@ namespace AxcessAssistant.Dialogs
                     var msg = "Note created for " + clt.ClientName + " with the value '" + _note + "'";
                     await context.PostAsync(msg);
                     var baseDiag = new BaseDialog();
-                    context.Wait(baseDiag.StartOver);
+                    await baseDiag.StartOver(context);
                 }
             }
             else
@@ -70,7 +70,7 @@ namespace AxcessAssistant.Dialogs
 
                 await context.PostAsync(msg);
                 var baseDiag = new BaseDialog();
-                context.Wait(baseDiag.StartOver);
+                await baseDiag.StartOver(context);
             }
 
         }

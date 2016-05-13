@@ -35,7 +35,6 @@ namespace AxcessAssistant.Dialogs
         public async  Task ReviewNotes(IDialogContext context, LuisResult result)
         {
             RetrieiveEntities(context,result);
-            RetrieiveEntities(context, result);
             var noteDiag = new NoteDiag();
             noteDiag.ShowDialog(context);
         }
@@ -86,9 +85,10 @@ namespace AxcessAssistant.Dialogs
             context.ConversationData.SetValue("entities", result);
         } 
 
-        public Task StartOver(IDialogContext context, IAwaitable<Message> message)
+        public async Task StartOver(IDialogContext context)
         {
-            return MessageReceived(context, message);
+            await context.PostAsync("Is there anything else I can help you with today?");
+            context.Wait(MessageReceived);
         }
 
         public BaseDialog(ILuisService service = null)

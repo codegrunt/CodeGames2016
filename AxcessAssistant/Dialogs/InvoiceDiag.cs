@@ -38,7 +38,7 @@ namespace AxcessAssistant.Dialogs
                 var msg = "Good Afternoon, How can I assist you?";
                 await context.PostAsync(msg);
                 var baseDiag = new BaseDialog();
-                context.Wait(baseDiag.StartOver);
+                await baseDiag.StartOver(context);
             }
             else if (message.Text == "reset")
             {
@@ -87,7 +87,8 @@ namespace AxcessAssistant.Dialogs
                 var msg = "Sent invoice to " + message.Text;
                 await context.PostAsync(msg);
                 Reset();
-                context.Wait(MessageReceivedAsync);
+                var baseDiag = new BaseDialog();
+                await baseDiag.StartOver(context);
             }
 
         }
