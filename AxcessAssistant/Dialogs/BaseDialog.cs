@@ -7,7 +7,6 @@ using AxcessAssistant.Models;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Luis;
 using Microsoft.Bot.Builder.Luis.Models;
-using Microsoft.Bot.Connector;
 
 namespace AxcessAssistant.Dialogs
 {
@@ -18,7 +17,7 @@ namespace AxcessAssistant.Dialogs
         [LuisIntent("")]
         public async Task None(IDialogContext context, LuisResult result)
         {
-            string message = $"Sorry I did not understand: \"{result.Query}\"";
+            string message = result.Query.ToLower().Contains("thank you") ? $"It was a pleasure, I am always here to help." : $"Sorry I did not understand: \"{result.Query}\".";
             await context.PostAsync(message);
             context.Wait(MessageReceived);
         }
@@ -28,15 +27,15 @@ namespace AxcessAssistant.Dialogs
         {
             RetrieiveEntities(context, result);
             var noteDiag = new NoteDiag();
-            await noteDiag.StartAsync(context);
+            await noteDiag.StartAsync(context, StartOver);
         }
 
         [LuisIntent("ReviewNotes")]
-        public async  Task ReviewNotes(IDialogContext context, LuisResult result)
+        public async Task ReviewNotes(IDialogContext context, LuisResult result)
         {
-            RetrieiveEntities(context,result);
+            RetrieiveEntities(context, result);
             var noteDiag = new NoteDiag();
-            await noteDiag.StartAsync(context);
+            await noteDiag.StartAsync(context, StartOver);
         }
 
         [LuisIntent("GetInvoice")]
@@ -44,7 +43,7 @@ namespace AxcessAssistant.Dialogs
         {
             RetrieiveEntities(context, result);
             var invDiag = new InvoiceDiag();
-            await invDiag.StartAsync(context);
+            await invDiag.StartAsync(context, StartOver);
         }
 
         [LuisIntent("Update Intent")]
@@ -53,15 +52,16 @@ namespace AxcessAssistant.Dialogs
             RetrieiveEntities(context, result);
             string message = $"Recieved Create Intent with the following Entities: {string.Join(",", result.Entities.Select(e => e.Entity + e.Type))}";
             await context.PostAsync(message);
-            
+
             context.Wait(MessageReceived);
         }
 
         public void RetrieiveEntities(IDialogContext context, LuisResult luis)
         {
+            context.ConversationData.RemoveValue("client");
             var clientDal = new ClientDAL();
             Dictionary<string, Func<string, Entity>> dataRetriever = new Dictionary<string, Func<string, Entity>>();
-            dataRetriever.Add("Note", x => new Entity {EntityType = EntityType.Note, EntityValue = x});
+            dataRetriever.Add("Note", x => new Entity { EntityType = EntityType.Note, EntityValue = x });
             dataRetriever.Add("ClientName", x =>
             {
                 var clients = clientDal.FindClientsByName(x);
@@ -69,8 +69,8 @@ namespace AxcessAssistant.Dialogs
                 {
                     context.ConversationData.SetValue("client", clients[0]);
                 }
-                return new Entity {EntityType = EntityType.Client, EntityValue = x};
-            } );
+                return new Entity { EntityType = EntityType.Client, EntityValue = x };
+            });
             dataRetriever.Add("ProjectName", x => new Entity() { EntityType = EntityType.Project, EntityValue = x });
             dataRetriever.Add("InvoiceNumber", x => new Entity() { EntityType = EntityType.Invoice, EntityValue = x });
             dataRetriever.Add("ordinal", x => new Entity() { EntityType = EntityType.Ordinal, EntityValue = x });
@@ -83,7 +83,7 @@ namespace AxcessAssistant.Dialogs
                 }
             });
             context.ConversationData.SetValue("entities", result);
-        } 
+        }
 
         public async Task StartOver(IDialogContext context)
         {

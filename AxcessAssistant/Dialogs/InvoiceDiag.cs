@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using Microsoft.Bot.Connector;
@@ -16,7 +17,13 @@ namespace AxcessAssistant.Dialogs
     {
         
         private Document _doc;
+        private Func<IDialogContext, Task> _contextAction;
 
+        public Task StartAsync(IDialogContext context, Func<IDialogContext, Task> contextAction)
+        {
+            _contextAction = contextAction;
+            return StartAsync(context);
+        }
         public async Task StartAsync(IDialogContext context)
         {
             await context.PostAsync("Invoice Dialog");
@@ -81,8 +88,16 @@ namespace AxcessAssistant.Dialogs
                 var msg = "Sent invoice to " + message.Text;
                 await context.PostAsync(msg);
                 Reset();
-                var baseDiag = new BaseDialog();
-                await baseDiag.StartOver(context);
+                if (_contextAction != null)
+                {
+                    await _contextAction(context);
+                }
+                else
+                {
+                    var baseDiag = new BaseDialog();
+                    await baseDiag.StartOver(context);
+                }
+
             }
 
         }

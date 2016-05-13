@@ -15,7 +15,13 @@ namespace AxcessAssistant.Dialogs
     [Serializable]
     public class NoteDiag : IDialog<object>, IAxcessDiag
     {
+        private Func<IDialogContext, Task> _contextAction;
 
+        public Task StartAsync(IDialogContext context, Func<IDialogContext, Task> contextAction )
+        {
+            _contextAction = contextAction;
+            return StartAsync(context);
+        }
         public async Task StartAsync(IDialogContext context)
         {
             Client clt = null;
@@ -25,7 +31,7 @@ namespace AxcessAssistant.Dialogs
 
             if (clt != null)
             {
-                msg = $"Please enter note for client {clt.ClientName}."; 
+                msg = $"Please enter note for client {clt.ClientName}.";
             }
 
             await context.PostAsync(msg);
@@ -65,8 +71,15 @@ namespace AxcessAssistant.Dialogs
                 }
 
                 await context.PostAsync(msg);
-                var baseDiag = new BaseDialog();
-                await baseDiag.StartOver(context);
+                if (_contextAction != null)
+                {
+                    await _contextAction(context);
+                }
+                else
+                {
+                    var baseDiag = new BaseDialog();
+                    await baseDiag.StartOver(context);
+                }
             }
 
         }

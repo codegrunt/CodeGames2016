@@ -113,6 +113,7 @@
     <Compile Include="Dialogs\IAxcessDiag.cs" />
     <Compile Include="Dialogs\InvoiceDiag.cs" />
     <Compile Include="Dialogs\NoteDiag.cs" />
+    <Compile Include="Dialogs\ProjectDialog.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
