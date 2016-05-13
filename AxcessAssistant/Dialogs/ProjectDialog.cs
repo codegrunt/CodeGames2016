@@ -27,7 +27,7 @@ namespace AxcessAssistant.Dialogs
 
         public async Task StartAsync(IDialogContext context)
         {
-            var message = $"Please Provide a client";
+            var message = $"Please provide a client";
             var message2 = string.Empty;
             context.ConversationData.TryGetValue("client", out _client);
             var projectDal = new ProjectDAL();
@@ -70,11 +70,19 @@ namespace AxcessAssistant.Dialogs
             }
             context.Wait(MessageReceivedAsync);
         }
-
-
-
+        
         public async Task MessageReceivedAsync(IDialogContext context, IAwaitable<Message> argument)
         {
+            if (_contextAction != null)
+            {
+                await _contextAction(context);
+            }
+            else
+            {
+                var baseDiag = new BaseDialog();
+                await baseDiag.StartOver(context);
+            }
+
             var message = await argument;
 
             if (string.Equals(message.Text, "cancel", StringComparison.InvariantCultureIgnoreCase))
