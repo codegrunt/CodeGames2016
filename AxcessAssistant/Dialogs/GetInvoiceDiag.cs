@@ -69,28 +69,41 @@ namespace AxcessAssistant.Dialogs
                     invoice = invoices[Math.Max(0, invoices.IndexOf(currentInvoice)-1)];
                 }
 
-                var msg = new Message();
+                var msg = string.Empty;
+                var msg2 = string.Empty;
 
                 if (invoice != null)
                 {
-                    msg.Text = $"Sure, here's invoice {invoice.Name}.";
-                    msg.Attachments = new List<Attachment>
-                    {
-                        new Attachment
-                        {
-                            Title = invoice.FileName,
-                            ContentType = "application/json", ContentUrl = $"https://axcessassistantbot.azurewebsites.net/api/files?fileName={invoice.FileName}"
-                        }
-                    };
+                    msg = $"Sure, here's invoice {invoice.Name}.";
+                    msg2 = $"https://axcessassistantbot.azurewebsites.net/api/files?fileName={invoice.FileName}";
+                    //msg.Attachments = new List<Attachment>
+                    //{
+                    //    new Attachment
+                    //    {
+                    //        Title = invoice.FileName,
+                    //        ContentType = "application/json", ContentUrl = $"https://axcessassistantbot.azurewebsites.net/api/files?fileName={invoice.FileName}"
+                    //    }
+                    //};
                     context.ConversationData.SetValue("invoice", invoice.ID);
                 }
                 else
                 {
-                    msg.Text = $"I can't find any invoices for {clt.ClientName}";
+                    msg = $"I can't find any invoices for {clt.ClientName}";
                 }
                 
                 await context.PostAsync(msg);
-                context.Wait(MessageReceivedAsync);
+                if (!String.IsNullOrEmpty(msg2))
+                    await context.PostAsync(msg2);
+
+                if (_contextAction != null)
+                {
+                    await _contextAction(context);
+                }
+                else
+                {
+                    var baseDiag = new BaseDialog();
+                    await baseDiag.StartOver(context);
+                }
             }
             else
             {
@@ -113,7 +126,7 @@ namespace AxcessAssistant.Dialogs
         {
             Client clt = null;
             context.ConversationData.TryGetValue("client", out clt);
-            context.Wait(MessageReceivedAsync);
+            //context.Wait(MessageReceivedAsync);
             if (_contextAction != null)
             {
                 await _contextAction(context);
