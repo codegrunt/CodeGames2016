@@ -19,15 +19,9 @@ namespace AxcessAssistant.Dialogs
 
         public async Task StartAsync(IDialogContext context)
         {
-            context.Wait(MessageReceivedAsync);
-        }
-
-        public async void ShowDialog(IDialogContext context)
-        {
             await context.PostAsync("Invoice Dialog");
             context.Wait(MessageReceivedAsync);
         }
-
         public async Task MessageReceivedAsync(IDialogContext context, IAwaitable<Message> argument)
         {
             var message = await argument;

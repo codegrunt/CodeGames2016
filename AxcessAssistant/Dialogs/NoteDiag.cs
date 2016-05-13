@@ -18,11 +18,6 @@ namespace AxcessAssistant.Dialogs
 
         public async Task StartAsync(IDialogContext context)
         {
-            context.Wait(MessageReceivedAsync);
-        }
-
-        public async void ShowDialog(IDialogContext context)
-        {
             await context.PostAsync("Notes dialog");
             context.Wait(MessageReceivedAsync);
         }

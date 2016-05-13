@@ -28,7 +28,7 @@ namespace AxcessAssistant.Dialogs
         {
             RetrieiveEntities(context, result);
             var noteDiag = new NoteDiag();
-            noteDiag.ShowDialog(context);
+            await noteDiag.StartAsync(context);
         }
 
         [LuisIntent("ReviewNotes")]
@@ -36,7 +36,7 @@ namespace AxcessAssistant.Dialogs
         {
             RetrieiveEntities(context,result);
             var noteDiag = new NoteDiag();
-            noteDiag.ShowDialog(context);
+            await noteDiag.StartAsync(context);
         }
 
         [LuisIntent("GetInvoice")]
@@ -44,7 +44,7 @@ namespace AxcessAssistant.Dialogs
         {
             RetrieiveEntities(context, result);
             var invDiag = new InvoiceDiag();
-            invDiag.ShowDialog(context);
+            await invDiag.StartAsync(context);
         }
 
         [LuisIntent("Update Intent")]

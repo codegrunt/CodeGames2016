@@ -10,8 +10,6 @@ namespace AxcessAssistant.Dialogs
 {
     interface IAxcessDiag
     {
-        void ShowDialog(IDialogContext context);
-
         Task StartAsync(IDialogContext context);
 
         Task MessageReceivedAsync(IDialogContext context, IAwaitable<Message> argument);
