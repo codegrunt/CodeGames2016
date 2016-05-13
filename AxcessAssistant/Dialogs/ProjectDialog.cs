@@ -38,7 +38,7 @@ namespace AxcessAssistant.Dialogs
             {
                 var entity = entities.First(x => x.EntityType == EntityType.Project);
                 var projects = projectDal.FindProjectsByClientId(_client.ID);
-                var project = projects.FirstOrDefault(x => x.Name == entity.EntityValue);
+                var project = projects.FirstOrDefault(x => x.Name.Equals(entity.EntityValue, StringComparison.InvariantCultureIgnoreCase));
                 if (project != null)
                 {
                     _proj = project;
@@ -139,7 +139,7 @@ namespace AxcessAssistant.Dialogs
                 var projects = projectDal.FindProjectsByClientId(_client.ID);
                 if (projects.Any())
                 {
-                    var project = projects.FirstOrDefault(x => x.Name == message.Text);
+                    var project = projects.FirstOrDefault(x => x.Name.Equals(message.Text, StringComparison.InvariantCultureIgnoreCase));
                     if (project != null)
                     {
                         _proj = project;
@@ -154,6 +154,7 @@ namespace AxcessAssistant.Dialogs
                         context.Wait(MessageReceivedAsync);
                     }
                     await context.PostAsync($"What is the status would you like to set project '{_proj.Name}' to?");
+                    context.Wait(MessageReceivedAsync);
                 }
                 else
                 {
