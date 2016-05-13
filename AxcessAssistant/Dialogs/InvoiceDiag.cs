@@ -105,7 +105,7 @@ namespace AxcessAssistant.Dialogs
         {
             var docs = new DocumentDAL();
             var doc = docs.FindDocumentsForClientUpToDate(clientId, DateTime.Now, DocumentType.Invoice);
-            if (doc != null || doc.Count > 0)
+            if (doc != null && doc.Count > 0)
             {
                 return doc[0];
             }

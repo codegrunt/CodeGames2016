@@ -67,6 +67,7 @@ namespace AxcessAssistant.DAL
                 Email = "eileen.sideways@gmail.com",
                 ARBalance = 947.00m,
                 Office = "Irving 175",
+                Notes = new List<Note> { new Note { DateTime = new DateTime(2016, 2, 12), Text = "Need more information on corrected W-2" } }
             });
 
             _clients.Add(new Client
