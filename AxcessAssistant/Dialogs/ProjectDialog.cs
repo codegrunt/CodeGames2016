@@ -71,13 +71,13 @@ namespace AxcessAssistant.Dialogs
             context.Wait(MessageReceivedAsync);
         }
 
-        
+
 
         public async Task MessageReceivedAsync(IDialogContext context, IAwaitable<Message> argument)
         {
             var message = await argument;
 
-            if (string.Equals(message.Text, "quit", StringComparison.InvariantCultureIgnoreCase))
+            if (string.Equals(message.Text, "cancel", StringComparison.InvariantCultureIgnoreCase))
             {
                 Reset();
                 if (_contextAction != null)
@@ -97,46 +97,88 @@ namespace AxcessAssistant.Dialogs
                 await context.PostAsync(msg);
                 context.Wait(MessageReceivedAsync);
             }
-            //else if (_doc == null)
-            //{
-            //    var msg = "Can not find client " + message.Text;
-            //    var msg2 = string.Empty;
-            //    try
-            //    {
-            //        var clt = GetClient(message.Text);
-            //        if (clt != null)
-            //        {
-            //            context.ConversationData.SetValue("client", clt);
-
-            //            var inv = GetInvoiceByClient(clt.ID);
-
-            //            if (inv != null)
-            //            {
-            //                _doc = inv;
-            //                msg = "Found invoice " + inv.Name;
-            //                msg2 = "Who would you like to send this to?";
-            //            }
-            //            else
-            //                msg = "Can not find invoices for client " + message.Text;
-            //        }
-            //    }
-            //    catch
-            //    {
-            //        msg = "Can not find client " + message.Text;
-            //    }
-            //    finally
-            //    {
-            //        await context.PostAsync(msg);
-            //        if (msg2 != string.Empty)
-            //            await context.PostAsync(msg2);
-            //        context.Wait(MessageReceivedAsync);
-            //    }
-            //}
+            var projectDal = new ProjectDAL();
+            if (_client == null)
+            {
+                var cltDAL = new ClientDAL();
+                var clts = cltDAL.FindClientsByName(message.Text);
+                if (clts != null && clts.Count > 0)
+                {
+                    _client = clts[0];
+                    context.ConversationData.SetValue("client", _client);
+                    var projects = projectDal.FindProjectsByClientId(_client.ID);
+                    if (projects.Any())
+                    {
+                        await context.PostAsync($"{_client.ClientName} has the following projects: {string.Join(",", projects.Select(x => x.Name))}");
+                        await context.PostAsync("Which project would you like to change the status of?");
+                    }
+                    else
+                    {
+                        await context.PostAsync($"There were no projects found for {_client.ClientName}.");
+                        if (_contextAction != null)
+                        {
+                            await _contextAction(context);
+                        }
+                        else
+                        {
+                            var bd = new BaseDialog();
+                            await bd.StartOver(context);
+                        }
+                    }
+                    context.Wait(MessageReceivedAsync);
+                }
+                else
+                {
+                    await context.PostAsync($"Unable to locate client {message.Text}.");
+                    await context.PostAsync("Which client would you like to enter a note for?");
+                    context.Wait(MessageReceivedAsync);
+                }
+            }
+            else if (_proj == null)
+            {
+                var projects = projectDal.FindProjectsByClientId(_client.ID);
+                if (projects.Any())
+                {
+                    var project = projects.FirstOrDefault(x => x.Name == message.Text);
+                    if (project != null)
+                    {
+                        _proj = project;
+                    }
+                    else
+                    {
+                        await context.PostAsync($"Unable to locate project: {message.Text}.");
+                        await
+                            context.PostAsync(
+                                $"{_client.ClientName} has the following projects: {string.Join(",", projects.Select(x => x.Name))}");
+                        await context.PostAsync("Which project would you like to change the status of?");
+                        context.Wait(MessageReceivedAsync);
+                    }
+                    await context.PostAsync($"What is the status would you like to set project '{_proj.Name}' to?");
+                }
+                else
+                {
+                    await context.PostAsync($"There were no projects found for {_client.ClientName}.");
+                    if (_contextAction != null)
+                    {
+                        await _contextAction(context);
+                    }
+                    else
+                    {
+                        var bd = new BaseDialog();
+                        await bd.StartOver(context);
+                    }
+                }
+            }
             else
             {
-                var msg = "Sent invoice to " + message.Text;
+                var msg = "No Status provided.  Canceling status change.";
+                if (!String.IsNullOrEmpty(message.Text))
+                {
+                    msg = $"Status of Project {_proj.Name} changed to '{message.Text}' for {_client.ClientName}";
+                    _proj.Status = message.Text;
+                    projectDal.UpdateProject(_proj);
+                }
                 await context.PostAsync(msg);
-                Reset();
                 if (_contextAction != null)
                 {
                     await _contextAction(context);
@@ -147,7 +189,6 @@ namespace AxcessAssistant.Dialogs
                     await baseDiag.StartOver(context);
                 }
             }
-
         }
 
         private bool Reset()

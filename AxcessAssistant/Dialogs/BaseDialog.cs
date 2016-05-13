@@ -58,7 +58,6 @@ namespace AxcessAssistant.Dialogs
 
         public void RetrieiveEntities(IDialogContext context, LuisResult luis)
         {
-            context.ConversationData.RemoveValue("client");
             var clientDal = new ClientDAL();
             Dictionary<string, Func<string, Entity>> dataRetriever = new Dictionary<string, Func<string, Entity>>();
             dataRetriever.Add("Note", x => new Entity { EntityType = EntityType.Note, EntityValue = x });

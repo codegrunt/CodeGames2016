@@ -40,7 +40,6 @@ namespace AxcessAssistant.Dialogs
                     var bDiag = new BaseDialog();
                     await bDiag.StartOver(context);
                 }
-                
             }
             else
             {
