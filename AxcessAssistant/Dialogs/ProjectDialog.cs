@@ -61,7 +61,7 @@ namespace AxcessAssistant.Dialogs
             }
             else
             {
-                message = "Please provide a client to change the stutus on a project";
+                message = "Please provide a client to change the status on a project";
             }
             await context.PostAsync(message);
             if (!string.IsNullOrEmpty(message2))

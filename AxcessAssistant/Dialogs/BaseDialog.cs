@@ -50,7 +50,7 @@ namespace AxcessAssistant.Dialogs
         public async Task SendInvoice(IDialogContext context, LuisResult result)
         {
             RetrieiveEntities(context, result);
-            var invDiag = new GetInvoiceDiag();
+            var invDiag = new SendInvoiceDiag();
             await invDiag.StartAsync(context, StartOver);
         }
 
