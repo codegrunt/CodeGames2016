@@ -22,7 +22,7 @@ namespace AxcessAssistant.Dialogs
             context.Wait(MessageReceived);
         }
 
-        [LuisIntent("Create Notes")]
+        [LuisIntent("CreateNote")]
         public async Task CreateNotes(IDialogContext context, LuisResult result)
         {
             RetrieiveEntities(context, result);
@@ -30,7 +30,7 @@ namespace AxcessAssistant.Dialogs
             await noteDiag.StartAsync(context, StartOver);
         }
 
-        [LuisIntent("ReviewNotes")]
+        [LuisIntent("Get Note")]
         public async Task ReviewNotes(IDialogContext context, LuisResult result)
         {
             RetrieiveEntities(context, result);
@@ -54,7 +54,7 @@ namespace AxcessAssistant.Dialogs
             await invDiag.StartAsync(context, StartOver);
         }
 
-        [LuisIntent("Update Intent")]
+        [LuisIntent("UpdateProject")]
         public async Task Update(IDialogContext context, LuisResult result)
         {
             RetrieiveEntities(context, result);
