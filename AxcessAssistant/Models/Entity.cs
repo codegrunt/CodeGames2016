@@ -4,16 +4,14 @@
     {
         Client,
         Invoice,
-        Document,
         Project,
         Note,
-        PhoneNumber
+        Ordinal
     }
 
     public class Entity
     {
         public EntityType EntityType { get; set; }
-        public string EntityName { get; set; }
-        public string EntityId { get; set; }
+        public string EntityValue { get; set; }
     }
 }
