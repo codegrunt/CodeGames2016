@@ -12,13 +12,19 @@ using AxcessAssistant.DAL;
 namespace AxcessAssistant.Dialogs
 {
     [Serializable]
-    public class InvoiceDiag : IDialog<object>
+    public class InvoiceDiag : IDialog<object>, IAxcessDiag
     {
         
         private Document _doc;
 
         public async Task StartAsync(IDialogContext context)
         {
+            context.Wait(MessageReceivedAsync);
+        }
+
+        public async void ShowDialog(IDialogContext context)
+        {
+            await context.PostAsync("Invoice Dialog");
             context.Wait(MessageReceivedAsync);
         }
 

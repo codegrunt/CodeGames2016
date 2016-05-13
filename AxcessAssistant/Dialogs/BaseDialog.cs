@@ -27,32 +27,25 @@ namespace AxcessAssistant.Dialogs
         public async Task CreateNotes(IDialogContext context, LuisResult result)
         {
             RetrieiveEntities(context, result);
-            string message =
-                $"Recieved Create Notes Intent with the following Entities: {string.Join(",", result.Entities.Select(e => e.Entity + e.Type))}";
-            await context.PostAsync(message);
             var noteDiag = new NoteDiag();
-            context.Wait(noteDiag.MessageReceivedAsync);
+            noteDiag.ShowDialog(context);
         }
 
         [LuisIntent("ReviewNotes")]
         public async  Task ReviewNotes(IDialogContext context, LuisResult result)
         {
             RetrieiveEntities(context,result);
-            string message =
-                $"Recieved ReviewNotes Intent with the following Entities: {string.Join(",", result.Entities.Select(e => e.Entity + e.Type))}";
-            await context.PostAsync(message);
+            RetrieiveEntities(context, result);
             var noteDiag = new NoteDiag();
-            context.Wait(noteDiag.MessageReceivedAsync);
+            noteDiag.ShowDialog(context);
         }
 
         [LuisIntent("GetInvoice")]
         public async Task GetInvoice(IDialogContext context, LuisResult result)
         {
             RetrieiveEntities(context, result);
-            string message = $"Recieved GetInvoice Intent with the following Entities: {string.Join(",", result.Entities.Select(e => e.Entity + e.Type))}";
-            await context.PostAsync(message);
-            var invoiceDiag = new InvoiceDiag();
-            context.Wait(invoiceDiag.MessageReceivedAsync);
+            var invDiag = new InvoiceDiag();
+            invDiag.ShowDialog(context);
         }
 
         [LuisIntent("Update Intent")]

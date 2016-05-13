@@ -13,11 +13,17 @@ using AxcessAssistant.DAL;
 namespace AxcessAssistant.Dialogs
 {
     [Serializable]
-    public class NoteDiag : IDialog<object>
+    public class NoteDiag : IDialog<object>, IAxcessDiag
     {
 
         public async Task StartAsync(IDialogContext context)
         {
+            context.Wait(MessageReceivedAsync);
+        }
+
+        public async void ShowDialog(IDialogContext context)
+        {
+            await context.PostAsync("Notes dialog");
             context.Wait(MessageReceivedAsync);
         }
 

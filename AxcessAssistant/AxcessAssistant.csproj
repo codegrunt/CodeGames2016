@@ -110,6 +110,7 @@
     <Compile Include="Controllers\FilesController.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Dialogs\BaseDialog.cs" />
+    <Compile Include="Dialogs\IAxcessDiag.cs" />
     <Compile Include="Dialogs\InvoiceDiag.cs" />
     <Compile Include="Dialogs\NoteDiag.cs" />
     <Compile Include="Global.asax.cs">
