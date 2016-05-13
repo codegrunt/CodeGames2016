@@ -35,7 +35,7 @@ namespace AxcessAssistant.Dialogs
         public async  Task ReviewNotes(IDialogContext context, LuisResult result)
         {
             RetrieiveEntities(context,result);
-            var noteDiag = new NoteDiag();
+            var noteDiag = new ShowNotesDiag();
             await noteDiag.StartAsync(context);
         }
 
