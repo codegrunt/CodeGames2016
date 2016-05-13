@@ -18,7 +18,17 @@ namespace AxcessAssistant.Dialogs
 
         public async Task StartAsync(IDialogContext context)
         {
-            await context.PostAsync("Notes dialog");
+            Client clt = null;
+            context.ConversationData.TryGetValue("client", out clt);
+
+            var msg = "Which client would you like to enter a note for?";
+
+            if (clt != null)
+            {
+                msg = $"Please enter note for client {clt.ClientName}."; 
+            }
+
+            await context.PostAsync(msg);
             context.Wait(MessageReceivedAsync);
         }
 
@@ -30,15 +40,8 @@ namespace AxcessAssistant.Dialogs
             
             Client clt = null;
             context.ConversationData.TryGetValue("client", out clt);
-
-            if (clt == null && String.IsNullOrEmpty(_note))
-            {
-                _note = message.Text;
-                var msg = "Which client do you want to add the note too?";
-                await context.PostAsync(msg);
-                context.Wait(MessageReceivedAsync);
-            }
-            else if( clt == null && !String.IsNullOrEmpty(_note))
+            
+            if(clt == null)
             {
                 var cltDAL = new ClientDAL();
                 var clts = cltDAL.FindClientsByName(message.Text);
@@ -46,11 +49,9 @@ namespace AxcessAssistant.Dialogs
                 {
                     clt = clts[0];
                     context.ConversationData.SetValue("client", clt);
-                    cltDAL.AddNote(clt.ID, _note);
-                    var msg = "Note created for " + clt.ClientName + " with the value '" + _note + "'";
+                    var msg = $"What would you like the note for {clt.ClientName} to say?";
                     await context.PostAsync(msg);
-                    var baseDiag = new BaseDialog();
-                    await baseDiag.StartOver(context);
+                    context.Wait(MessageReceivedAsync);
                 }
             }
             else
@@ -58,7 +59,7 @@ namespace AxcessAssistant.Dialogs
                 var msg = "No note entered.";
                 if (!String.IsNullOrEmpty(message.Text))
                 {
-                    msg = "Note created for " + clt.ClientName + " with the value '" + message.Text + "'";
+                    msg = $"Note '{message.Text}' created for {clt.ClientName}";
                     var cltDal = new ClientDAL();
                     cltDal.AddNote(clt.ID, message.Text);
                 }
