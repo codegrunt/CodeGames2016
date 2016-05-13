@@ -22,7 +22,7 @@ namespace AxcessAssistant.DAL
 
         public List<Client> FindClientsByName(string name)
         {
-            return _clients.FindAll(x => x.ClientName.Contains(name) || x.ContactName.Contains(name));
+            return _clients.FindAll(x => x.ClientName.ToLower().Contains(name.ToLower()) || x.ContactName.Replace(".", " .").ToLower().Contains(name.ToLower()));
         }     
 
         public Client GetClientByContactPhoneNumber(string phoneNumber)
