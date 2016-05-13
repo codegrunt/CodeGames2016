@@ -58,7 +58,7 @@ namespace AxcessAssistant.Dialogs
                 await context.PostAsync($"Found the following notes for {noteClient.ClientName}:");
                 foreach (var note in noteClient.Notes)
                 {
-                    await context.PostAsync(note.Text);
+                    await context.PostAsync(note.ToString());
                 }
 
             }

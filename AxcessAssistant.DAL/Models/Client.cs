@@ -21,5 +21,10 @@ namespace AxcessAssistant.DAL.Models
     {
         public DateTime DateTime { get; set; }
         public string Text { get; set; }
+
+        public override string ToString()
+        {
+            return $"{this.DateTime.ToString("MM-dd-yyyy")}: {this.Text}";
+        }
     }
 }
