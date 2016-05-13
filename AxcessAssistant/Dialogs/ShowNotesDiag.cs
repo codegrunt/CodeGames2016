@@ -14,6 +14,14 @@ namespace AxcessAssistant.Dialogs
     [Serializable]
     public class ShowNotesDiag : IDialog<object>, IAxcessDiag
     {
+        private Func<IDialogContext, Task> _contextAction;
+
+        public Task StartAsync(IDialogContext context, Func<IDialogContext, Task> contextAction)
+        {
+            _contextAction = contextAction;
+            return StartAsync(context);
+        }
+
         public async Task StartAsync(IDialogContext context)
         {
 
@@ -23,8 +31,16 @@ namespace AxcessAssistant.Dialogs
             if (clt != null)
             {
                 await ShowNotes(context, clt);
-                var bDiag = new BaseDialog();
-                await bDiag.StartOver(context);
+                if (_contextAction != null)
+                {
+                    await _contextAction(context);
+                }
+                else
+                {
+                    var bDiag = new BaseDialog();
+                    await bDiag.StartOver(context);
+                }
+                
             }
             else
             {
@@ -66,8 +82,15 @@ namespace AxcessAssistant.Dialogs
 
                 await ShowNotes(context, clt);
                 context.ConversationData.SetValue("client", clt);
-                var bDiag = new BaseDialog();
-                await bDiag.StartOver(context);
+                if (_contextAction != null)
+                {
+                    await _contextAction(context);
+                }
+                else
+                {
+                    var bDiag = new BaseDialog();
+                    await bDiag.StartOver(context);
+                }
             }
             else
             {
