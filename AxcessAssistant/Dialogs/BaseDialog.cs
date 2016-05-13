@@ -42,7 +42,7 @@ namespace AxcessAssistant.Dialogs
         public async Task GetInvoice(IDialogContext context, LuisResult result)
         {
             RetrieiveEntities(context, result);
-            var invDiag = new InvoiceDiag();
+            var invDiag = new GetInvoiceDiag();
             await invDiag.StartAsync(context, StartOver);
         }
 
@@ -50,7 +50,7 @@ namespace AxcessAssistant.Dialogs
         public async Task SendInvoice(IDialogContext context, LuisResult result)
         {
             RetrieiveEntities(context, result);
-            var invDiag = new InvoiceDiag();
+            var invDiag = new GetInvoiceDiag();
             await invDiag.StartAsync(context, StartOver);
         }
 
@@ -73,12 +73,13 @@ namespace AxcessAssistant.Dialogs
                 if (clients.Count > 0)
                 {
                     context.ConversationData.SetValue("client", clients[0]);
+                    context.ConversationData.RemoveValue("invoice");
                 }
                 return new Entity { EntityType = EntityType.Client, EntityValue = x };
             });
             dataRetriever.Add("ProjectName", x => new Entity() { EntityType = EntityType.Project, EntityValue = x });
             dataRetriever.Add("InvoiceNumber", x => new Entity() { EntityType = EntityType.Invoice, EntityValue = x });
-            dataRetriever.Add("ordinal", x => new Entity() { EntityType = EntityType.Ordinal, EntityValue = x });
+            dataRetriever.Add("Ordinal", x => new Entity() { EntityType = EntityType.Ordinal, EntityValue = x });
             var result = new List<Entity>();
             luis.Entities.ToList().ForEach(x =>
             {
