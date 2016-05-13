@@ -14,8 +14,7 @@ namespace AxcessAssistant.Dialogs
     [Serializable]
     public class InvoiceDiag : IDialog<object>
     {
-
-        private string _clientName;
+        
         private Document _doc;
 
         public async Task StartAsync(IDialogContext context)
@@ -51,6 +50,7 @@ namespace AxcessAssistant.Dialogs
                     var clt = GetClient(message.Text);
                     if (clt != null)
                     {
+                        context.ConversationData.SetValue("client", clt);
 
                         var inv = GetInvoiceByClient(clt.ID);
 
@@ -95,7 +95,6 @@ namespace AxcessAssistant.Dialogs
 
         private Client GetClient(string clientName)
         {
-            _clientName = clientName;
             var clts = new ClientDAL();
             var clt = clts.FindClientsByName(clientName);
             return clt[0];
