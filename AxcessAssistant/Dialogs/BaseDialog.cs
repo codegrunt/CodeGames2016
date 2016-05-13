@@ -46,6 +46,14 @@ namespace AxcessAssistant.Dialogs
             await invDiag.StartAsync(context, StartOver);
         }
 
+        [LuisIntent("SendInvoice")]
+        public async Task SendInvoice(IDialogContext context, LuisResult result)
+        {
+            RetrieiveEntities(context, result);
+            var invDiag = new InvoiceDiag();
+            await invDiag.StartAsync(context, StartOver);
+        }
+
         [LuisIntent("Update Intent")]
         public async Task Update(IDialogContext context, LuisResult result)
         {
