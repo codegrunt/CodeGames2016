@@ -10,7 +10,7 @@ using Microsoft.Bot.Builder.Luis.Models;
 
 namespace AxcessAssistant.Dialogs
 {
-    [LuisModel("02853d60-2139-4908-ab6c-5deea7a6fb30", "b33a40080b2d4a2f8bc3ca754e749f7c")]
+    [LuisModel("0131b28f-6dbe-4fba-83fd-51ce8555cb54", "55d649e8b94c41aab7e358cd34c4a978")]
     [Serializable]
     public class BaseDialog : LuisDialog<Entity>
     {
