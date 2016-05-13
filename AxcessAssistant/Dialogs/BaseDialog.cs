@@ -38,7 +38,8 @@ namespace AxcessAssistant.Dialogs
         {
             string message = $"Recieved Create Intent with the following Entities: {string.Join(",", result.Entities.Select(e => e.Entity + e.Type))}";
             await context.PostAsync(message);
-            context.Wait(MessageReceived);
+            var noteDiag = new NoteDiag();
+            context.Wait(noteDiag.MessageReceivedAsync);
         }
 
         public Task StartOver(IDialogContext context, IAwaitable<Message> message)

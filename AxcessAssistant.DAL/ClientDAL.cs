@@ -35,6 +35,14 @@ namespace AxcessAssistant.DAL
             return _clients.FirstOrDefault(x => x.Email == email);
         }
 
+        public bool AddNote(int clientId, string note)
+        {
+            var clt = GetClientById(clientId);
+            if (clt != null)
+                clt.Notes.Add(new Note { Text = note, DateTime = DateTime.Now });
+            return true;
+        }
+
         private void init()
         {
             _clients = new List<Client>();
