@@ -124,10 +124,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <None Include="Files\Invoice_122.pdf">
+    <None Include="Invoice_122.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Files\Invoice_123.pdf">
+    <None Include="Invoice_123.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Properties\PublishProfiles\AxcessAssistantBot - Web Deploy %282%29.pubxml" />
@@ -146,6 +146,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Files\" />
     <Folder Include="Forms\" />
   </ItemGroup>
   <PropertyGroup>

@@ -13,7 +13,7 @@ namespace AxcessAssistant.Controllers
         {
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
 
-            var path = HttpContext.Current.Server.MapPath("~/Files/" + fileName);
+            var path = fileName;
             var stream = new FileStream(path, FileMode.Open);
             result.Content = new StreamContent(stream);
             result.Content.Headers.ContentType =
